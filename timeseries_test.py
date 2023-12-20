@@ -28,26 +28,26 @@ def plot_original():
     df.set_index('date', inplace=True)
 
     # create a figure with subplots
-    fig, axes = plt.subplots(nrows=3, ncols=1, figsize=(10, 18))
-
-    # plot the 'Temperature' column over time
-    df['Temperature'].plot(ax=axes[0], title='Temperature over time')
-    axes[0].set_xlabel('Date')
-    axes[0].set_ylabel('Temperature (degrees Celsius)')
-
-    # plot the 'Rain' column over time
-    df['Rain'].plot(ax=axes[1], title='Rain over time')
-    axes[1].set_xlabel('Date')
-    axes[1].set_ylabel('Rain')
-
-    # plot the 'RH' column over time
-    df['RH'].plot(ax=axes[2], title='Relative Humidity over time')
-    axes[2].set_xlabel('Date')
-    axes[2].set_ylabel('Relative Humidity')
-
-    # show the plots
-    plt.tight_layout()
+    plt.figure(figsize=(10, 6))
+    df['Temperature'].plot(title='Temperature over time')
+    plt.xlabel('Date')
+    plt.ylabel('Temperature (degrees Celsius)')
     plt.show()
+
+    # Plotting Rain
+    plt.figure(figsize=(10, 6))
+    df['Rain'].plot(title='Rain over time')
+    plt.xlabel('Date')
+    plt.ylabel('Rain')
+    plt.show()
+
+    # Plotting Relative Humidity
+    plt.figure(figsize=(10, 6))
+    df['RH'].plot(title='Relative Humidity over time')
+    plt.xlabel('Date')
+    plt.ylabel('Relative Humidity')
+    plt.show()
+
 
 def linear_regression_plot(start_date, end_date, feature):
     """
@@ -161,10 +161,10 @@ def permuted_linear_regression_slopes(start_date, end_date, feature, num_permuta
     # plot histogram
     plt.figure(figsize=(10, 6))
     plt.hist(permutation_slopes, bins=30, color='skyblue', edgecolor='black', alpha=0.7)
-    plt.axvline(original_slope, color='red', linestyle='dashed', linewidth=2, label='Original Slope')
+    plt.axvline(original_slope, color='red', linestyle='dashed', linewidth=2, label=f'Original Slope: {round(original_slope,2)}')
     plt.xlabel('Slope')
     plt.ylabel('Frequency')
-    plt.title(f'Distribution of Slopes for {feature} from {start_date} to {end_date}')
+    plt.title(f'Distribution of Slopes for {feature} from 2012-08-15 to 2012-09-15')
     plt.legend()
     plt.savefig(os.path.join('figures', f'{feature}_slopes_distribution.png'))
     plt.show()
