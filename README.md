@@ -4,7 +4,7 @@ The other version involves exchanging the class names 'fire' and 'not fire' for 
 
 In this repository, we mainly used three files for our code and graphs. 
 The first file is timeseries_test.py, where you will find the code that generated the plots for our time series test. 
-The second file is a Jupyter notebook called 'Correlation, Multicollinearity, and Linear Regression.ipynb.' 
+The second file is a Jupyter notebook called 'Multicolinearity and logistic regression on single predictors.ipynb' 
 This notebook contains the code for our multicollinearity tests and VIF values tests. The notebook also includes correlation tests for our individual predictors. 
 The final file we use is logregres.py, which contains all the code to generate and create all the plots used in the slides for the logistic regression model.
 
