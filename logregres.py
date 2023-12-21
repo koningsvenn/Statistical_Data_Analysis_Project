@@ -8,6 +8,7 @@ from sklearn.feature_selection import RFE
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 import numpy as np
 
+# This function is used to test the number of features to use in the model
 def test_RFE(data_path):
     data = pd.read_csv(data_path)
     useful_data = data[['FFMC', 'DMC', 'DC', 'ISI', 'BUI', 'FWI', 'Temperature', 'RH', 'Ws', 'Rain', 'Classes']]
@@ -43,6 +44,7 @@ def test_RFE(data_path):
     plt.show()
 
 
+# This function is used to calculate the confusion matrix
 def confusion_matrix(y_test, predictions):
     tp, tn, fp, fn = 0, 0, 0, 0
     for i in range(len(predictions)):
@@ -57,9 +59,11 @@ def confusion_matrix(y_test, predictions):
     tp_percent, tn_percent, fp_percent, fn_percent = tp/len(predictions), tn/len(predictions), fp/len(predictions), fn/len(predictions)
     return tp_percent, tn_percent, fp_percent, fn_percent
 
+# This function is used to calculate the accuracy
 def accuracy(tp, tn, fp, fn):
     return ((tp + tn) / (tp + tn + fp + fn)) * 100
 
+# This function is used to plot the confusion matrix
 def plot_confusion_matrix(tp, tn, fp, fn, ax):
     tp, tn, fp, fn = tp * 100, tn * 100, fp * 100, fn * 100
     cax = ax.matshow([[tp, fp], [fn, tn]], cmap=plt.cm.Blues, alpha=0.3)
@@ -74,6 +78,7 @@ def plot_confusion_matrix(tp, tn, fp, fn, ax):
     ax.set_xticklabels(['Fire', 'No Fire'])
     ax.set_yticklabels(['Fire', 'No Fire'])
 
+# This function is used to show the coefficients of the model
 def show_coefficients(logmodel, feature_names):
     coefs = logmodel.coef_[0]
     coef_dict = {feature_names[i]: coefs[i] for i in range(len(feature_names))}
@@ -85,6 +90,7 @@ def show_coefficients(logmodel, feature_names):
     most_influential_feature = max(coef_dict, key=lambda k: abs(coef_dict[k]))
     print(f"\nMost Influential Feature: {most_influential_feature} (Coefficient: {coef_dict[most_influential_feature]:.4f})")
 
+# This function is used to plot the coefficients of the model
 def plot_coefficients(logmodel, feature_names, ax):
     coefs = logmodel.coef_[0]
     coef_dict = {feature_names[i]: coefs[i] for i in range(len(feature_names))}
@@ -94,6 +100,7 @@ def plot_coefficients(logmodel, feature_names, ax):
     ax.set_xticklabels([x[0] for x in sorted_features], rotation=90)
     ax.set_title('Feature Coefficients')
 
+# This function is used to show the formula of the model
 def test_formula(logmodel):
     intercept = logmodel.intercept_[0]
     coefs = logmodel.coef_[0]
@@ -104,6 +111,11 @@ def test_formula(logmodel):
     print(f"\nFormula: {str_formula}")
 
 
+# This function is used to test the model based on the type of data
+# test_type: 'FWI', 'Observations' or 'All'
+# 'FWI': test the model based on the fire behavior index
+# 'Observations': test the model based on the weather observations
+# 'All': test the model based on all the data
 def test_classification(test_type):
     data_paths = ['data_0_1/Both.csv', 'data_0_1/Sidi_BEl-abbes.csv', 'data_0_1/Bejaia.csv']
     fig, axs = plt.subplots(2, 3, figsize=(16, 10))
@@ -154,12 +166,15 @@ def test_classification(test_type):
     plt.tight_layout(rect=[0, 0.03, 1, 0.95])
     plt.show()
 
+# This function is used to standardize the data
 def standardize_data(data):
     data_copy = data.copy()
     for column in data_copy.columns:
         data_copy[column] = (data_copy[column] - data_copy[column].mean()) / data_copy[column].std()
     return data_copy
 
+# This function is used to test the models based on cross prediction
+# Thus the model trained on one area is tested on the other area
 def cross_predict_n(n):
     sidi_coefficients = [[], [], [], [], [], [], [], [], [], []]
     bejaia_coefficients = [[], [], [], [], [], [], [], [], [], []]
@@ -225,6 +240,13 @@ def cross_predict_n(n):
     plt.savefig('logregres_cross_predict.png')
     plt.show()
 
+# This function is used to create the model n times and store the coefficients and accuracy
+# datapath: the path of the data
+# n: the number of times to create the model
+# mode: 'Obs', 'FWI', 'Fuel' or None
+# 'Obs': create the model based on the weather observations
+# 'FWI': create the model based on the fire behavior index
+# 'Fuel': create the model based on the fuel moisture codes
 def create_model_n_times(datapath, n, mode=None):
     data = pd.read_csv(datapath)
     if mode == 'Obs':
@@ -270,6 +292,7 @@ def create_model_n_times(datapath, n, mode=None):
 
     return coefficients, accuracy_list
 
+# Creates the model n times with only the weather obesetvations
 def wheather_obs():
     data_paths = ['data_0_1/Both.csv', 'data_0_1/Sidi_BEl-abbes.csv', 'data_0_1/Bejaia.csv']
     fig, axs = plt.subplots(2, 3, figsize=(15, 10))
@@ -302,7 +325,7 @@ def wheather_obs():
     plt.savefig('logregres_obs.png')
     plt.show()
 
-
+# creates the model n times with only the fuel moisture codes
 def fuel():
     data_paths = ['data_0_1/Both.csv', 'data_0_1/Sidi_BEl-abbes.csv', 'data_0_1/Bejaia.csv']
     fig, axs = plt.subplots(2, 3, figsize=(15, 10))
@@ -335,7 +358,7 @@ def fuel():
     plt.savefig('logregres_fuel.png')
     plt.show()
 
-
+# Creates the model n times with only the fire behavior index
 def fire():
     data_paths = ['data_0_1/Both.csv', 'data_0_1/Sidi_BEl-abbes.csv', 'data_0_1/Bejaia.csv']
     fig, axs = plt.subplots(2, 3, figsize=(15, 10))

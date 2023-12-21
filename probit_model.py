@@ -41,5 +41,5 @@ def run_analysis(file_path):
     plt.grid(True)
     plt.show()
 
-file_path = './data_0_1/Both.csv'  # Replace with your actual file path
-run_analysis(file_path)
+if __name__ == '__main__':
+    run_analysis('./data_0_1/Both.csv')

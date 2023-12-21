@@ -72,7 +72,7 @@ def linear_regression_plot(start_date, end_date, feature):
     df.set_index('date', inplace=True)
     df.sort_index(inplace=True)
 
-    # convert start_date and end_date to datetime 
+    # convert start_date and end_date to datetime
     start_date = pd.to_datetime(start_date)
     end_date = pd.to_datetime(end_date)
 
@@ -92,10 +92,10 @@ def linear_regression_plot(start_date, end_date, feature):
     # plot the original data
     plt.figure(figsize=(10, 6))
     plt.scatter(subset_df.index, subset_df[feature], label=feature)
-    
+
     # plot the regression line
     plt.plot(subset_df.index, model.predict(X), color='red', label='Linear Regression')
-    
+
     # set plot labels and title
     plt.xlabel('Date')
     plt.ylabel(feature)
@@ -119,7 +119,7 @@ def permuted_linear_regression_slopes(start_date, end_date, feature, num_permuta
     - displays histogram of slope distribution
     """
 
-    # eead the dataset
+    # read the dataset
     df = pd.read_csv('./data_0_1/Both.csv')
 
     # convert 'day', 'month', and 'year' columns to datetime
@@ -144,7 +144,7 @@ def permuted_linear_regression_slopes(start_date, end_date, feature, num_permuta
     model = LinearRegression()
     model.fit(X, y)
     original_slope = model.coef_[0]
-    
+
     # perform permutation and store slopes in a list
     permutation_slopes = []
 
@@ -170,7 +170,7 @@ def permuted_linear_regression_slopes(start_date, end_date, feature, num_permuta
     plt.show()
 
 
-
-plot_original() 
-linear_regression_plot('2012-08-15', '2012-09-15', 'Temperature')
-permuted_linear_regression_slopes('2012-08-15', '2012-09-15', 'Temperature', num_permutations=1000)
+if __name__ == '__main__':
+    plot_original()
+    linear_regression_plot('2012-08-15', '2012-09-15', 'Temperature')
+    permuted_linear_regression_slopes('2012-08-15', '2012-09-15', 'Temperature', num_permutations=1000)
